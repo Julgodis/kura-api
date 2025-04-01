@@ -1,4 +1,6 @@
-pub mod api;
+pub mod error;
+pub mod releases;
+pub mod health;
 
-#[cfg(feature = "server")]
-pub mod server;
+pub use error::Result;
+pub use error::Error;
