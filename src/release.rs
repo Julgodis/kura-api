@@ -6,8 +6,10 @@ use serde::{Deserialize, Serialize};
 pub enum ReleaseType {
     #[serde(rename = "movie")]
     Movie,
-    #[serde(rename = "tv")]
+    #[serde(rename = "series")]
     Series,
+    #[serde(untagged)]
+    Other(String),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]

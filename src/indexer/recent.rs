@@ -1,7 +1,6 @@
 use serde::{Deserialize, Serialize};
 
 use super::ReleaseEntry;
-use crate::Error;
 use crate::Result;
 
 #[derive(Debug, Serialize, Deserialize)]
