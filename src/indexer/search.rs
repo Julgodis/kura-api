@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::Release;
+use super::ReleaseEntry;
 use crate::Result;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -16,7 +16,7 @@ impl SearchRequest {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SearchResponse {
-    pub releases: Vec<Release>,
+    pub releases: Vec<ReleaseEntry>,
 }
 
 #[cfg(feature = "axum")]

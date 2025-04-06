@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::Release;
+use super::ReleaseEntry;
 use crate::Error;
 use crate::Result;
 
@@ -20,7 +20,7 @@ impl RecentRequest {
 pub struct RecentResponse {
     pub since: chrono::DateTime<chrono::Utc>,
     pub until: chrono::DateTime<chrono::Utc>,
-    pub releases: Vec<Release>,
+    pub releases: Vec<ReleaseEntry>,
 }
 
 #[cfg(feature = "axum")]

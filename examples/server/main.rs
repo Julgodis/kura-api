@@ -1,29 +1,23 @@
 use std::net::SocketAddr;
 
 use axum::extract::Query;
-use kura_indexer::Result;
-use kura_indexer::health::HealthRequest;
-use kura_indexer::health::HealthResponse;
-use kura_indexer::releases;
+use kura_api::indexer::RecentRequest;
+use kura_api::indexer::RecentResponse;
+use kura_api::indexer::SearchRequest;
+use kura_api::indexer::SearchResponse;
+use kura_api::Result;
+use kura_api::health::HealthRequest;
+use kura_api::health::HealthResponse;
 
 #[axum::debug_handler]
-async fn releases_recent_handler(
-    Query(request): Query<releases::RecentRequest>,
-) -> Result<releases::RecentResponse> {
+async fn indexer_recent_handler(
+    Query(request): Query<RecentRequest>,
+) -> Result<RecentResponse> {
     request.validate()?;
 
-    let releases = vec![
-        releases::Release::builder("1", chrono::Utc::now())
-            .add_category(releases::Category::Anime(releases::AnimeCategory::Movie))
-            .add_tag("tag1".to_string())
-            .build(),
-        releases::Release::builder("2", chrono::Utc::now())
-            .add_category(releases::Category::Anime(releases::AnimeCategory::TV))
-            .add_tag("tag2".to_string())
-            .build(),
-    ];
+    let releases = vec![];
 
-    Ok(releases::RecentResponse {
+    Ok(RecentResponse {
         since: chrono::Utc::now(),
         until: chrono::Utc::now(),
         releases,
@@ -31,23 +25,14 @@ async fn releases_recent_handler(
 }
 
 #[axum::debug_handler]
-async fn releases_search_handler(
-    Query(request): Query<releases::SearchRequest>,
-) -> Result<releases::SearchResponse> {
+async fn indexer_search_handler(
+    Query(request): Query<SearchRequest>,
+) -> Result<SearchResponse> {
     request.validate()?;
 
-    let releases = vec![
-        releases::Release::builder("1", chrono::Utc::now())
-            .add_category(releases::Category::Anime(releases::AnimeCategory::Movie))
-            .add_tag("tag1".to_string())
-            .build(),
-        releases::Release::builder("2", chrono::Utc::now())
-            .add_category(releases::Category::Anime(releases::AnimeCategory::TV))
-            .add_tag("tag2".to_string())
-            .build(),
-    ];
+    let releases = vec![];
 
-    Ok(releases::SearchResponse { releases })
+    Ok(SearchResponse { releases })
 }
 
 #[axum::debug_handler]
@@ -59,6 +44,11 @@ async fn health_handler(Query(_): Query<HealthRequest>) -> Result<HealthResponse
         commit: "abc123".to_string(),
         status: "ok".to_string(),
         uptime,
+        is_indexer: true,
+        is_parser: false,
+        is_classifier: false,
+        is_profiler: false,
+        is_scorer: false,
     };
     Ok(response)
 }
@@ -69,12 +59,12 @@ async fn main() {
 
     let app = axum::Router::new()
         .route(
-            "/api/v1/releases/recent",
-            axum::routing::get(releases_recent_handler),
+            "/api/v1/indexer/recent",
+            axum::routing::get(indexer_recent_handler),
         )
         .route(
-            "/api/v1/releases/search",
-            axum::routing::get(releases_search_handler),
+            "/api/v1/indexer/search",
+            axum::routing::get(indexer_search_handler),
         )
         .route("/api/v1/health", axum::routing::get(health_handler));
 

@@ -10,6 +10,12 @@ pub struct HealthResponse {
     pub commit: String,
     pub status: String,
     pub uptime: chrono::Duration,
+
+    pub is_indexer: bool,
+    pub is_parser: bool,
+    pub is_classifier: bool,
+    pub is_profiler: bool,
+    pub is_scorer: bool,
 }
 
 #[cfg(feature = "axum")]

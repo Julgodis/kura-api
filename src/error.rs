@@ -16,6 +16,7 @@ pub struct ErrorDescription {
 }
 
 impl Error {
+    #[cfg(feature = "axum")]
     pub fn status(&self) -> axum::http::StatusCode {
         match self {
             Error::InternalError => axum::http::StatusCode::INTERNAL_SERVER_ERROR,
